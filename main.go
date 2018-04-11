@@ -7,7 +7,15 @@ import (
 	"net/http"
 	"log"
 	"strings"
+	"encoding/json"
 )
+
+type ResJson struct {
+	Code       int32  `json:"code"`
+	IsExist    bool   `json:"isExist"`
+	OriginText string `json:"originText"`
+	Reason     string `json:"reason"`
+}
 
 var rootTrie *TrieNode
 
@@ -38,7 +46,7 @@ func init() {
 
 func main() {
 	http.HandleFunc("/", search)
-	
+
 	err := http.ListenAndServe(":9090", nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
@@ -46,15 +54,28 @@ func main() {
 }
 
 func search(w http.ResponseWriter, r *http.Request) {
+
 	r.ParseForm()
 
 	text := strings.Join(r.Form["text"], "")
 
-	fmt.Println(text)
-
 	isExist, existStr := rootTrie.IsExist(text)
-	resStr := fmt.Sprintf("%s isExist %t %s", text, isExist, existStr)
 
-	fmt.Println(resStr)
-	fmt.Fprintf(w, resStr)
+	resJson := ResJson{
+		0,
+		isExist,
+		text,
+		existStr,
+	}
+
+	resStr, err := json.Marshal(resJson)
+	if err != nil {
+		fmt.Println("json marshal err:", err)
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	} else {
+
+		w.Header().Set("Content-Type", "application/json")
+		w.Write(resStr)
+	}
 }
