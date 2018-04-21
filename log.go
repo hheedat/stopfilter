@@ -26,23 +26,23 @@ var f *os.File
 var date = ""
 var dateFormat = "2006-01-02"
 
-func main() {
-
-	i := 1
-	for {
-		Log.Error("000")
-		Log.Warn("111")
-		Log.Info("222")
-		Log.Debug("333")
-		i++
-		if i > 10000000 {
-			break
-		}
-		time.Sleep(500 * time.Millisecond)
-	}
-
-	Destroy()
-}
+//func main() {
+//
+//	i := 1
+//	for {
+//		Log.Error("000")
+//		Log.Warn("111")
+//		Log.Info("222")
+//		Log.Debug("333")
+//		i++
+//		if i > 10000000 {
+//			break
+//		}
+//		time.Sleep(500 * time.Millisecond)
+//	}
+//
+//	Destroy()
+//}
 
 func init() {
 	initLogger()
@@ -92,7 +92,7 @@ func closeFile() {
 }
 
 func getLogPath() string {
-	path := "/var/logs/error.log"
+	path := Conf.LogPath
 	return path
 }
 

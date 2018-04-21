@@ -1,13 +1,13 @@
 package main
 
 import (
-	"os"
 	"bufio"
-	"fmt"
-	"net/http"
-	"log"
-	"strings"
 	"encoding/json"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"strings"
 )
 
 type ResJson struct {
@@ -20,27 +20,33 @@ type ResJson struct {
 var rootTrie *TrieNode
 
 func init() {
+	defer Destroy()
+
 	root := TrieNode{nil, false}
-	inFile, _ := os.Open("/Users/admin/nickname_uniq.txt")
+	inFile, err := os.Open(Conf.WordsPath)
+	if err != nil {
+		Log.Error("read words fail")
+	}
 	defer inFile.Close()
+
 	scanner := bufio.NewScanner(inFile)
 	scanner.Split(bufio.ScanLines)
 
 	lineNum := 0
 	for scanner.Scan() {
 		lineStr := scanner.Text()
-		if len(lineStr) > 6 {
-			lineNum++
-			root.AddWord(lineStr)
-		}
+
+		root.AddWord(lineStr)
+
+		lineNum++
 		if lineNum%100000 == 0 {
-			fmt.Println(lineStr, lineNum)
+			Log.Info(lineStr + " : " + string(lineNum))
 			PrintMem()
 		}
 	}
 
 	rootTrie = &root
-	fmt.Println("######### finish init #########")
+	Log.Info("######### finish init #########")
 	PrintMem()
 }
 
@@ -74,6 +80,7 @@ func search(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	} else {
+		Log.Info(resStr)
 
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(resStr)
