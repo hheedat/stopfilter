@@ -1,12 +1,13 @@
-package main
+package util
 
 import (
 	"runtime"
-	"fmt"
+	"stopfilter/log"
+	"strconv"
 )
 
 func PrintMem() {
 	memStats := &runtime.MemStats{}
 	runtime.ReadMemStats(memStats)
-	fmt.Println("mem.sys ", memStats.Sys)
+	log.Log.Info("mem.sys " + strconv.FormatUint(memStats.Sys, 10))
 }

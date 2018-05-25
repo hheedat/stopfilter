@@ -1,10 +1,11 @@
-package main
+package log
 
 import (
 	"log"
 	"os"
 	"fmt"
 	"time"
+	"stopfilter/conf"
 )
 
 const (
@@ -92,7 +93,7 @@ func closeFile() {
 }
 
 func getLogPath() string {
-	path := Conf.LogPath
+	path := conf.Conf.LogPath
 	return path
 }
 

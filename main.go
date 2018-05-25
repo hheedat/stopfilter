@@ -8,6 +8,9 @@ import (
 	"net/http"
 	"os"
 	"strings"
+	"stopfilter/conf"
+	"stopfilter/util"
+	slog "stopfilter/log"
 )
 
 type ResJson struct {
@@ -17,15 +20,13 @@ type ResJson struct {
 	Reason     string `json:"reason"`
 }
 
-var rootTrie *TrieNode
+var rootTrie *util.TrieNode
 
-func init() {
-	defer Destroy()
-
-	root := TrieNode{nil, false}
-	inFile, err := os.Open(Conf.WordsPath)
+func buildStruct() {
+	root := util.TrieNode{nil, false}
+	inFile, err := os.Open(conf.Conf.WordsPath)
 	if err != nil {
-		Log.Error("read words fail")
+		slog.Log.Error("read words fail")
 	}
 	defer inFile.Close()
 
@@ -39,18 +40,23 @@ func init() {
 		root.AddWord(lineStr)
 
 		lineNum++
-		if lineNum%100000 == 0 {
-			Log.Info(lineStr + " : " + string(lineNum))
-			PrintMem()
+		if lineNum%10000 == 0 {
+			slog.Log.Info(lineStr + " : " + string(lineNum))
+			util.PrintMem()
 		}
 	}
+	slog.Log.Info("### finish load")
+	util.PrintMem()
 
 	rootTrie = &root
-	Log.Info("######### finish init #########")
-	PrintMem()
+	slog.Log.Info("### finish init")
+	util.PrintMem()
 }
 
 func main() {
+	defer slog.Destroy()
+	buildStruct()
+
 	http.HandleFunc("/", search)
 
 	err := http.ListenAndServe(":9090", nil)
@@ -80,7 +86,7 @@ func search(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	} else {
-		Log.Info(resStr)
+		slog.Log.Info(string(resStr))
 
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(resStr)
