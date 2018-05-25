@@ -8,56 +8,64 @@ type TrieNode struct {
 }
 
 func (n *TrieNode) IsMatch(words string) bool {
-	runes := []rune(words)
-	key := string(runes[0])
-	theMap := *n.Child
-
-	if _, ok := theMap[key]; !ok {
+	if words == "" {
 		return false
 	} else {
-		theNode := theMap[key]
-		runesLen := len(runes)
+		runes := []rune(words)
+		key := string(runes[0])
+		theMap := *n.Child
 
-		if runesLen == 1 {
-			return theNode.Exist
+		if _, ok := theMap[key]; !ok {
+			return false
 		} else {
-			if theNode.Child != nil {
-				return theNode.IsMatch(string(runes[1:]))
+			theNode := theMap[key]
+			runesLen := len(runes)
+
+			if runesLen == 1 {
+				return theNode.Exist
 			} else {
-				return false
+				if theNode.Child != nil {
+					return theNode.IsMatch(string(runes[1:]))
+				} else {
+					return false
+				}
 			}
 		}
 	}
 }
 
 func (n *TrieNode) IsExist(words string) (bool, string) {
-	runes := []rune(words)
-	key := string(runes[0])
-	theMap := *n.Child
-	existStr := key
-
-	if _, ok := theMap[key]; !ok {
+	if words == "" {
 		return false, ""
 	} else {
-		theNode := theMap[key]
-		runesLen := len(runes)
+		runes := []rune(words)
+		key := string(runes[0])
+		theMap := *n.Child
+		existStr := key
 
-		if theNode.Exist || runesLen == 1 {
-			if theNode.Exist {
-				return true, existStr
-			} else {
-				return false, ""
-			}
+		if _, ok := theMap[key]; !ok {
+			return false, ""
 		} else {
-			if theNode.Child != nil {
-				bo, str := theNode.IsExist(string(runes[1:]))
-				if bo {
-					return bo, existStr + str
+			theNode := theMap[key]
+			runesLen := len(runes)
+
+			if theNode.Exist || runesLen == 1 {
+				if theNode.Exist {
+					return true, existStr
 				} else {
 					return false, ""
 				}
 			} else {
-				return false, ""
+				if theNode.Child != nil {
+					bo, str := theNode.IsExist(string(runes[1:]))
+					if bo {
+						return bo, existStr + str
+					} else {
+						return false, ""
+					}
+				} else {
+					return false, ""
+				}
 			}
 		}
 	}
