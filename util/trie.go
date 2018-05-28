@@ -39,6 +39,24 @@ func (n *TrieNode) IsExist(words string) (bool, string) {
 		return false, ""
 	} else {
 		runes := []rune(words)
+		runesLen := len(runes)
+		var bo bool
+		var str string
+		for i := 0; i < runesLen; i++ {
+			bo, str = n.IsPrefixExist(string(runes[i:]))
+			if bo {
+				return bo, str
+			}
+		}
+		return bo, str
+	}
+}
+
+func (n *TrieNode) IsPrefixExist(words string) (bool, string) {
+	if words == "" {
+		return false, ""
+	} else {
+		runes := []rune(words)
 		key := string(runes[0])
 		theMap := *n.Child
 		existStr := key
