@@ -7,10 +7,10 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strings"
 	"stopfilter/conf"
-	"stopfilter/util"
 	slog "stopfilter/log"
+	"stopfilter/util"
+	"strings"
 )
 
 type ResJson struct {
@@ -59,7 +59,7 @@ func main() {
 
 	http.HandleFunc("/", search)
 
-	err := http.ListenAndServe(":9090", nil)
+	err := http.ListenAndServe(":"+conf.Conf.ListenPort, nil)
 	if err != nil {
 		log.Fatal("ListenAndServe: ", err)
 	}
@@ -87,6 +87,7 @@ func search(w http.ResponseWriter, r *http.Request) {
 		return
 	} else {
 		slog.Log.Info(string(resStr))
+		util.PrintMem()
 
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(resStr)

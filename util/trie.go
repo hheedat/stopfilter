@@ -1,6 +1,8 @@
 package util
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type TrieNode struct {
 	Child *map[string]TrieNode
@@ -75,7 +77,7 @@ func (n *TrieNode) IsPrefixExist(words string) (bool, string) {
 				}
 			} else {
 				if theNode.Child != nil {
-					bo, str := theNode.IsExist(string(runes[1:]))
+					bo, str := theNode.IsPrefixExist(string(runes[1:]))
 					if bo {
 						return bo, existStr + str
 					} else {

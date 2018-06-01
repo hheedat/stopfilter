@@ -8,14 +8,16 @@ import (
 )
 
 type Configuration struct {
-	WordsPath string
-	LogPath   string
+	WordsPath  string
+	LogPath    string
+	LogLevel   string
+	ListenPort string
 }
 
 var Conf Configuration
 
 func init() {
-	log.SetFlags(log.Lshortfile|log.Ldate|log.Lmicroseconds)
+	log.SetFlags(log.Lshortfile | log.Ldate | log.Lmicroseconds)
 
 	confFile, err := os.Open("./conf.json")
 	if err != nil {

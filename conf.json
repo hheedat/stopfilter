@@ -1,4 +1,6 @@
 {
-  "wordsPath": "/Users/admin/nickname_uniq.txt",
-  "logPath": "/var/logs/error.log"
+  "wordsPath": "/Users/admin/stopwords.txt",
+  "logPath": "/var/logs/index.log",
+  "logLevel": "2",
+  "listenPort": "10010"
 }

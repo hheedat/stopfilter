@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"time"
 	"stopfilter/conf"
+	"strconv"
 )
 
 const (
@@ -52,7 +53,12 @@ func init() {
 func initLogger() {
 	checkRotate()
 
-	Log.level = 2
+	var err error
+	Log.level, err = strconv.Atoi(conf.Conf.LogLevel)
+	if err != nil {
+		Log.level = 2
+	}
+	
 	Log.callDepth = 2
 }
 
