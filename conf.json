@@ -1,6 +1,6 @@
 {
-  "wordsPath": "/Users/admin/stopwords.txt",
-  "logPath": "/var/logs/index.log",
-  "logLevel": "2",
-  "listenPort": "10010"
+  "wordsPath": "./words/stopwords.txt",
+  "logPath": "./log/filter.log",
+  "logLevel": "1",
+  "listenPort": "8080"
 }
