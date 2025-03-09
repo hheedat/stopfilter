@@ -1,6 +1,6 @@
 {
   "wordsPath": "./words/stopwords.txt",
-  "logPath": "./log/filter.log",
+  "logPath": "./output/filter.log",
   "logLevel": "1",
   "listenPort": "8080"
 }
