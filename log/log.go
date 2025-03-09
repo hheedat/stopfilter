@@ -5,7 +5,7 @@ import (
 	"os"
 	"fmt"
 	"time"
-	"stopfilter/conf"
+	"github.com/hheedat/stopfilter/conf"
 	"strconv"
 )
 

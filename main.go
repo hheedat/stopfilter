@@ -7,9 +7,9 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"stopfilter/conf"
-	slog "stopfilter/log"
-	"stopfilter/util"
+	"github.com/hheedat/stopfilter/conf"
+	slog "github.com/hheedat/stopfilter/log"
+	"github.com/hheedat/stopfilter/util"
 	"strings"
 )
 

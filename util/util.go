@@ -2,7 +2,7 @@ package util
 
 import (
 	"runtime"
-	"stopfilter/log"
+	"github.com/hheedat/stopfilter/log"
 	"strconv"
 )
 
